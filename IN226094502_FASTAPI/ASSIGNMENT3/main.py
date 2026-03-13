@@ -12,16 +12,13 @@ products = [
     {'id': 4, 'name': 'Pen Set', 'price':  49, 'category': 'Stationery',  'in_stock': True }
 ]
 
-# ── Endpoint 0 — Home ────────────────────────────────────────
-
 @app.get('/')
 
 def home():
-
     return {'message': 'Welcome to our E-commerce API'}
 
 
-# ── Endpoint 1 — Return all products ──────────────────────────
+# Return all products
 
 @app.get('/products')
 
@@ -29,8 +26,7 @@ def get_all_products():
 
     return {'products': products, 'total': len(products)}
 
-# ── Endpoint 2 — Add a new product ──────────────────
-# Question 1
+# Add a new product
 
 @app.post("/products")
 def add_product(product: dict):
@@ -49,8 +45,7 @@ def add_product(product: dict):
         "product": product
     }
 
-# ── Endpoint 3 — Bulk discount by category ──────────────────────────
-# Bonus
+# Bulk discount by category
 
 @app.put('/products/discount') 
 def bulk_discount( category: str = Query(..., description='Category to discount'), discount_percent: int = Query(..., ge=1, le=99, description='% off'), ): 
@@ -66,8 +61,7 @@ def bulk_discount( category: str = Query(..., description='Category to discount'
     
     return { 'message': f'{discount_percent}% discount applied to {category}', 'updated_count': len(updated), 'updated_products': updated, }
 
-# ── Endpoint 4 — Product audit ──────────────────────────
-# Question 5
+# Product audit
 
 @app.get('/products/audit') 
 def product_audit(): 
@@ -85,7 +79,7 @@ def product_audit():
             'most_expensive': {'name': priciest['name'], 
                                'price': priciest['price']}, }
 
-# ── Endpoint 5 — Return a product by ID ──────────────────────────
+# Return a product by ID
 
 @app.get('/products/{product_id}')
 
@@ -97,8 +91,7 @@ def get_product(product_id: int):
         
     return {'error': 'Product not found'}
 
-# ── Endpoint 6 — Update a product's price and stock status ──────────────────────────
-# Question 2
+# Update a product's price and stock status
 
 @app.put("/products/{product_id}")
 def update_product(product_id: int, price: Optional[int] = None, in_stock: Optional[bool] = None):
@@ -119,8 +112,7 @@ def update_product(product_id: int, price: Optional[int] = None, in_stock: Optio
 
     raise HTTPException(status_code=404, detail="Product not found")
 
-# ── Endpoint 7 — Delete a product by ID ──────────────────────────
-# Question 3
+# Delete a product by ID
 
 @app.delete('/products/{product_id}') 
 def delete_product(product_id: int, response: Response): 
